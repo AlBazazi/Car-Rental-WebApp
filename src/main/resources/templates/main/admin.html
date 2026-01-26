@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <link rel="icon" href="https://www.flaticon.com/svg/static/icons/svg/1047/1047051.svg" type="image/svg+xml">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="/addash.css">
+</head>
+<body>
+<div class="container">
+    <header>
+        <button class="back-home-btn" onclick="location.href='/'">
+            <i class="fas fa-arrow-left"></i> Go Back
+        </button>
+        <h1><i class="fas fa-users-cog"></i> Admin Dashboard</h1>
+    </header>
+
+    <div class="dashboard-content">
+        <div class="section">
+            <h2><i class="fas fa-car"></i> Cars</h2>
+            <table>
+                <thead>
+                <tr>
+                    <th>Make</th>
+                    <th>Model</th>
+                    <th>Price</th>
+                    <th>Qty</th>
+                    <th>Available</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="car : ${cars}">
+                    <td th:text="${car.make}">Make</td>
+                    <td th:text="${car.model}">Model</td>
+                    <td th:text="${car.price}">0</td>
+                    <td th:text="${car.quantity}">0</td>
+                    <td th:text="${car.available}">true</td>
+                    <td>
+                        <div class="button-group">
+                            <button class="action-btn edit-btn" th:onclick="'location.href=\'/admin/car/edit/' + ${car.id} + '\''">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button class="action-btn delete-btn" th:onclick="'location.href=\'/admin/car/delete/' + ${car.id} + '\''">
+                                <i class="fas fa-trash-alt"></i> Delete
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <button class="add-btn add-car-btn" onclick="location.href='/admin/car/add'">
+                <i class="fas fa-plus-circle"></i> Add Car Model
+            </button>
+
+            <button class="add-btn" onclick="location.href='/admin/factor'">
+                <i class="fas fa-cogs"></i> Set Car Factor
+            </button>
+
+            <h2 class="customers-heading"><i class="fas fa-user-friends"></i> Customers</h2>
+            <table>
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>NIC</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="customer : ${customers}">
+                    <td th:text="${customer.name}">Name</td>
+                    <td th:text="${customer.email}">Email</td>
+                    <td th:text="${customer.phoneNumber}">Phone</td>
+                    <td th:text="${customer.nic}">NIC</td>
+                    <td>
+                        <div class="button-group">
+                            <button class="action-btn edit-btn" th:onclick="'location.href=\'/admin/customer/edit/' + ${customer.id} + '\''">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <button class="add-btn" onclick="location.href='/admin/customer/add'">
+                <i class="fas fa-user-plus"></i> Add Customer
+            </button>
+        </div>
+
+        <div class="section">
+            <h2><i class="fas fa-clipboard-list"></i> Rental Orders</h2>
+            <table>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Car</th>
+                    <th>Customer</th>
+                    <th>Days</th>
+                    <th>Total</th>
+                    <th>Start Date</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="order : ${orders}">
+                    <td th:text="${order.id}">1</td>
+                    <td th:text="${order.car.make + ' ' + order.car.model}">Car</td>
+                    <td th:text="${order.customer.name}">Customer</td>
+                    <td th:text="${order.numberOfDays}">0</td>
+                    <td th:text="${order.totalPrice}">0.0</td>
+                    <td th:text="${order.startDate}">Date</td>
+                    <td>
+                        <div class="button-group">
+                            <button class="action-btn edit-btn" th:onclick="'location.href=\'/admin/order/edit/' + ${order.id} + '\''">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2><i class="fas fa-credit-card"></i> Payments</h2>
+            <table>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Order ID</th>
+                    <th>Amount Paid</th>
+                    <th>Method</th>
+                    <th>Date</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="payment : ${payments}">
+                    <td th:text="${payment.id}">1</td>
+                    <td th:text="${payment.rentalOrder.id}">1</td>
+                    <td th:text="${payment.amountPaid}">0.0</td>
+                    <td th:text="${payment.paymentMethod}">Method</td>
+                    <td th:text="${payment.paymentDate}">Date</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Car Rental System</title>
+    <link rel="icon" href="https://www.flaticon.com/svg/static/icons/svg/1047/1047051.svg" type="image/svg+xml">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/home.css}">
+</head>
+<body>
+
+<header>
+    <div class="website-name">
+        <i class="fas fa-car"></i> Car Rental System
+    </div>
+    <a href="#" class="admin-btn" onclick="promptAdminPassword(event)">
+        <i class="fas fa-user-shield"></i> Admin
+    </a>
+</header>
+
+<main class="main-container">
+    <h1>Welcome to the Car Rental System</h1>
+    <p>Your journey begins here. Choose an action to get started:</p>
+    <div class="btn-container">
+        <a href="/details"><i class="fas fa-info-circle"></i> Get Rental Details</a>
+        <a href="/form"><i class="fas fa-plus-circle"></i> Place New Rental</a>
+    </div>
+</main>
+
+<section class="our-fleet-section">
+    <h2><i class="fas fa-car"></i> Our Fleet</h2>
+    <div class="car-grid">
+        <div class="car-item">
+            <img src="/images/audi_a4.jpeg" alt="Audi A4">
+            <h3>Audi A4</h3>
+        </div>
+        <div class="car-item">
+            <img src="/images/bmw_series3.jpeg" alt="BMW 3 Series">
+            <h3>BMW 3 Series</h3>
+        </div>
+        <div class="car-item">
+            <img src="/images/mercedes_xls.jpeg" alt="Mercedes XLS">
+            <h3>Mercedes XLS</h3>
+        </div>
+        <div class="car-item">
+            <img src="/images/audi_x3.jpeg" alt="Audi X3">
+            <h3>Audi X3</h3>
+        </div>
+        <div class="car-item">
+            <img src="/images/bmw_gll.jpeg" alt="BMW GLL">
+            <h3>BMW GLL</h3>
+        </div>
+        <div class="car-item">
+            <img src="/images/mercedes_oss.jpeg" alt="Mercedes OSS">
+            <h3>Mercedes OSS</h3>
+        </div>
+    </div>
+</section>
+
+<section class="features-section">
+    <h2>Why Choose Us?</h2>
+    <div class="feature-grid">
+        <div class="feature-item">
+            <i class="fas fa-check-circle"></i>
+            <h3>Easy Booking</h3>
+            <p>Book your car in just a few clicks. Fast, simple, and convenient!</p>
+        </div>
+        <div class="feature-item">
+            <i class="fas fa-car-alt"></i>
+            <h3>Luxury Brands</h3>
+            <p>Drive around in style with our premium fleet of luxury vehicles.</p>
+        </div>
+        <div class="feature-item">
+            <i class="fas fa-handshake"></i>
+            <h3>Transparent Pricing</h3>
+            <p>No hidden fees. What you see is what you pay.</p>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <p>&copy; 2025 Car Rental System | Developed for SDA <i class="fas fa-code"></i></p>
+</footer>
+
+<script>
+    function promptAdminPassword(event) {
+        event.preventDefault();
+        const password = prompt("Enter admin password:");
+        if (password === "admin123") {
+            window.location.href = "/admin";
+        } else if (password !== null) {
+            alert("Incorrect password. Access denied.");
+        }
+    }
+</script>
+
+</body>
+</html>

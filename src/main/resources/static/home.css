@@ -1,0 +1,240 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f4f4f4;
+    color: #333;
+}
+
+header {
+    background: #2c3e50;
+    color: #fff;
+    padding: 15px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.website-name {
+    font-size: 1.8em;
+    font-weight: 700;
+}
+
+.website-name i {
+    margin-right: 10px;
+    color: #3498db;
+}
+
+.admin-btn {
+    background: #3498db;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+.admin-btn:hover {
+    background: #2980b9;
+}
+
+.main-container {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.main-container h1 {
+    font-size: 3em;
+    color: #2c3e50;
+}
+
+.main-container p {
+    font-size: 1.2em;
+    margin-bottom: 30px;
+}
+
+.btn-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.btn-container a {
+    padding: 15px 30px;
+    border-radius: 5px;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+}
+
+.btn-container a i {
+    margin-right: 10px;
+}
+
+.btn-container a:first-child {
+    background: #28a745;
+    color: #fff;
+}
+
+.btn-container a:first-child:hover {
+    background: #218838;
+}
+
+.btn-container a:last-child {
+    background: #ffc107;
+    color: #333;
+}
+
+.btn-container a:last-child:hover {
+    background: #e0a800;
+}
+
+.our-fleet-section {
+    padding: 60px 20px;
+    background: #fff;
+    text-align: center;
+}
+
+.our-fleet-section h2 {
+    font-size: 2.5em;
+    color: #2c3e50;
+    margin-bottom: 40px;
+    position: relative;
+}
+
+.our-fleet-section h2::after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 4px;
+    background: #3498db;
+    margin: 10px auto 0;
+    border-radius: 2px;
+}
+
+.car-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.car-item {
+    background: #fafafa;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.car-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.car-item img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid #eee;
+    margin-bottom: 15px;
+}
+
+.car-item h3 {
+    margin: 10px 0 5px;
+    font-size: 1.5em;
+    color: #34495e;
+}
+
+.car-item p {
+    color: #28a745;
+    font-weight: bold;
+    margin: 0;
+}
+
+.features-section {
+    background: #f8f9fa;
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.features-section h2 {
+    font-size: 2.5em;
+    color: #2c3e50;
+    margin-bottom: 40px;
+    position: relative;
+}
+
+.features-section h2::after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 4px;
+    background: #3498db;
+    margin: 10px auto 0;
+    border-radius: 2px;
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.feature-item {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.feature-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.feature-item i {
+    font-size: 2.5em;
+    color: #3498db;
+    margin-bottom: 10px;
+}
+
+footer {
+    background: #2c3e50;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    font-size: 0.9em;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .main-container h1 {
+        font-size: 2em;
+    }
+
+    .btn-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .car-item img {
+        height: 150px;
+    }
+
+    .our-fleet-section h2,
+    .features-section h2 {
+        font-size: 2em;
+    }
+}

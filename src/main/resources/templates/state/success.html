@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Rental Successful!</title>
+    <link rel="icon" href="https://www.flaticon.com/svg/static/icons/svg/1047/1047051.svg" type="image/svg+xml">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* General Body Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to right, #e6ffe6, #d4f7d4); /* Lighter green gradient for success */
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Ensures it takes full viewport height */
+        }
+
+        .container {
+            max-width: 650px; /* Slightly wider for better info display */
+            width: 90%;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 15px; /* More rounded */
+            box-shadow: 0 10px 30px rgba(0, 128, 0, 0.15); /* Softer, more prominent shadow */
+            text-align: center;
+            animation: fadeInScale 0.5s ease-out; /* Smooth entrance animation */
+        }
+
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        h1 {
+            color: #28a745; /* Success green */
+            font-size: 3em; /* Larger heading */
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px; /* Space between icon and text */
+        }
+
+        h1 i {
+            color: #28a745; /* Consistent icon color */
+        }
+
+        p {
+            font-size: 1.3em;
+            color: #555;
+            margin-bottom: 30px;
+        }
+
+        .info {
+            background-color: #f7fff7; /* Very light green background for info block */
+            border: 1px solid #d4edda; /* Subtle green border */
+            border-radius: 10px;
+            padding: 25px;
+            margin-top: 30px;
+            text-align: left;
+            box-shadow: inset 0 0 10px rgba(0, 128, 0, 0.05); /* Inner shadow for depth */
+        }
+
+        .info p {
+            font-size: 1.1em; /* Slightly larger text in info block */
+            color: #333;
+            margin-bottom: 15px; /* Spacing between info lines */
+            display: flex;
+            align-items: center; /* Align icon and text */
+            gap: 10px; /* Space between icon and text */
+        }
+
+        .info p:last-child {
+            margin-bottom: 0; /* No margin for the last paragraph */
+        }
+
+        .info p strong {
+            color: #2c3e50; /* Darker color for labels */
+            min-width: 120px; /* Align labels consistently */
+            display: inline-block;
+        }
+
+        /* Go Back to Home Button */
+        .home-btn {
+            display: inline-flex; /* Use inline-flex for icon and text alignment */
+            align-items: center;
+            gap: 10px; /* Space between icon and text */
+            margin-top: 40px; /* More space from info block */
+            padding: 15px 30px;
+            background-color: #3498db; /* Consistent blue from home page */
+            color: white;
+            text-decoration: none;
+            border-radius: 8px; /* Consistent rounded corners */
+            font-size: 1.2em;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .home-btn:hover {
+            background-color: #2980b9; /* Darker blue on hover */
+            transform: translateY(-3px); /* Lift effect on hover */
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .home-btn i {
+            font-size: 1.1em; /* Adjust icon size */
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px;
+            }
+            h1 {
+                font-size: 2.5em;
+                flex-direction: column; /* Stack icon and text on small screens */
+                gap: 10px;
+            }
+            p {
+                font-size: 1.1em;
+            }
+            .info p {
+                font-size: 1em;
+                flex-direction: column; /* Stack label and value */
+                align-items: flex-start;
+            }
+            .info p strong {
+                min-width: unset;
+            }
+            .home-btn {
+                padding: 12px 25px;
+                font-size: 1.1em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 20px;
+            }
+            h1 {
+                font-size: 2em;
+            }
+            p {
+                font-size: 1em;
+            }
+            .info {
+                padding: 15px;
+            }
+            .home-btn {
+                padding: 10px 20px;
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1><i class="fas fa-check-circle"></i> Rental Successful!</h1>
+    <p>Your car rental has been successfully confirmed!</p>
+    <div class="info">
+        <p><i class="fas fa-receipt"></i> <strong>Order ID:</strong> <span th:text="${id}">0</span></p>
+        <p><i class="fas fa-car-side"></i> <strong>Car:</strong> <span th:text="${car}">Car Name</span></p>
+        <p><i class="fas fa-calendar-alt"></i> <strong>Days Rented:</strong> <span th:text="${daysRented}">0</span></p>
+        <p><i class="fas fa-dollar-sign"></i> <strong>Total Cost:</strong> $<span th:text="${cost}">0.00</span></p>
+    </div>
+    <a href="/" class="home-btn"><i class="fas fa-home"></i> Go Back to Home</a>
+</div>
+</body>
+</html>

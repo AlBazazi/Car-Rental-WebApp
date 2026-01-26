@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Get Rental Details</title>
+    <link rel="icon" href="https://www.flaticon.com/svg/static/icons/svg/1047/1047051.svg" type="image/svg+xml">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="/detail.css">
+</head>
+<body>
+
+<header>
+    <a href="/" class="website-name">
+        <i class="fas fa-car"></i> Car Rental System
+    </a>
+</header>
+
+<div class="main-container">
+    <h1><i class="fas fa-search"></i> Get Rental Details</h1>
+    <p>Enter your Rental Order ID to fetch the details securely:</p>
+
+    <div class="input-container">
+        <input type="text" id="orderId" placeholder="Enter Order ID" />
+        <div class="btn-container">
+            <a href="javascript:void(0)" id="getDetailsBtn"><i class="fas fa-clipboard-list"></i> Get Details</a>
+        </div>
+    </div>
+
+    <a href="/" class="return-home-btn">
+        <i class="fas fa-home"></i> Return to Home
+    </a>
+</div>
+
+<div class="overlay" id="overlay">
+    <div class="popup">
+        <h2 id="popupTitle">Order Details</h2>
+        <p id="popupMessage">Fetching order details...</p>
+        <div id="popupDetails" style="display:none;">
+            <p><strong>Customer Name:</strong> <span id="customerName"></span></p>
+            <p><strong>Customer Email:</strong> <span id="customerEmail"></span></p>
+            <p><strong>Car:</strong> <span id="carDetails"></span></p>
+            <p><strong>Start Date:</strong> <span id="startDate"></span></p>
+            <p><strong>Number of Days:</strong> <span id="numberOfDays"></span></p>
+            <p><strong>Total Price:</strong> <span id="totalPrice"></span></p>
+        </div>
+        <button class="popup-btn" onclick="closePopup()">OK</button>
+    </div>
+</div>
+
+<script>
+    // Function to close the popup
+    function closePopup() {
+        document.getElementById("overlay").style.display = "none";
+    }
+
+    // Function to fetch rental details
+    document.getElementById("getDetailsBtn").addEventListener("click", function() {
+        const orderId = document.getElementById("orderId").value;
+
+        // Basic validation
+        if (orderId === "") {
+            showPopup("Input Error", "Please enter an Order ID!");
+            return;
+        }
+
+        // Sending request to backend to fetch details
+        fetch(`/detail/${orderId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => {
+            // If the response status is not OK, throw an error
+            if (!response.ok) {
+                return response.json().then(err => { throw new Error(err.message || 'No such Order Found!'); });
+            }
+            return response.json();
+        })
+        .then(data => {
+            // If the response contains rental details, display them in the popup
+            showPopup("Order Details", "", data);
+        })
+        .catch(error => {
+            showPopup("Error", error.message || "An unexpected error occurred. Please try again.");
+            console.error("Error fetching details:", error);
+        });
+    });
+
+    // Function to display the popup with details or error message
+    function showPopup(title, message, data = null) {
+        document.getElementById("popupTitle").innerText = title;
+        document.getElementById("popupMessage").innerText = message;
+
+        const popupDetails = document.getElementById("popupDetails");
+
+        if (data) {
+            // If rental data is present, display the details in the popup
+            document.getElementById("customerName").innerText = data.customerName;
+            document.getElementById("customerEmail").innerText = data.customerEmail;
+            document.getElementById("carDetails").innerText = `${data.carMake} ${data.carModel}`;
+            document.getElementById("startDate").innerText = data.startDate;
+            document.getElementById("numberOfDays").innerText = data.numberOfDays;
+            document.getElementById("totalPrice").innerText = data.totalPrice;
+
+            popupDetails.style.display = "block";
+            document.getElementById("popupMessage").style.display = "none";  // Hide default message
+        } else {
+            // If no data, hide the details section and show the message
+            popupDetails.style.display = "none";
+            document.getElementById("popupMessage").style.display = "block";
+        }
+
+        // Display the popup
+        document.getElementById("overlay").style.display = "block";
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Process Payment</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="/pay.css">
+</head>
+<body>
+<div class="container">
+    <header>
+        <button class="back-home-btn" onclick="window.history.back()">
+            <i class="fas fa-arrow-left"></i> Go Back
+        </button>
+        <h1><i class="fas fa-wallet"></i> Process Payment</h1>
+    </header>
+
+    <div class="payment-summary">
+        <p><i class="fas fa-receipt"></i> <strong>Order ID:</strong> <span th:text="${order.id}"></span></p>
+        <p><i class="fas fa-car-side"></i> <strong>Car:</strong> <span th:text="${order.car.make} + ' ' + ${order.car.model}"></span></p>
+        <p><i class="fas fa-calendar-alt"></i> <strong>Days Rented:</strong> <span th:text="${order.numberOfDays}"></span></p>
+        <p class="total-cost"> <strong>Total Cost:</strong><span th:text="${order.totalPrice}"></span> PKR</p>
+    </div>
+
+    <form th:action="@{/rental/pay}" method="post" onsubmit="return validatePayment()">
+        <input type="hidden" name="orderId" th:value="${order.id}">
+
+        <label for="paymentMethod"><i class="fas fa-credit-card"></i> Select Payment Method:</label>
+        <select id="paymentMethod" name="paymentMethod" onchange="showPaymentDetails()" required>
+            <option value="">-- Choose Method --</option>
+            <option value="nayapay">NayaPay</option>
+            <option value="debitcard">Debit Card</option>
+            <option value="banktransfer">Bank Transfer</option>
+        </select>
+
+        <div id="paymentDetails" class="hidden">
+            <label for="detailsInput" id="detailsLabel"><i class="fas fa-info-circle"></i> Enter Details:</label>
+            <input type="text" id="detailsInput" name="paymentDetails" placeholder="Enter details">
+        </div>
+
+        <button type="submit" class="submit-btn">
+            <i class="fas fa-check-circle"></i> Confirm Payment
+        </button>
+    </form>
+</div>
+
+<script>
+    function showPaymentDetails() {
+        const method = document.getElementById("paymentMethod").value;
+        const detailsDiv = document.getElementById("paymentDetails");
+        const label = document.getElementById("detailsLabel");
+        const input = document.getElementById("detailsInput");
+
+        if (method) {
+            detailsDiv.classList.remove("hidden");
+            input.required = true;
+
+            if (method === "nayapay") {
+                label.innerHTML = '<i class="fas fa-id-badge"></i> NayaPay ID:';
+                input.placeholder = "Enter NayaPay ID";
+            } else if (method === "debitcard") {
+                label.innerHTML = '<i class="fas fa-credit-card"></i> Card Number:';
+                input.placeholder = "Enter 16-digit Card Number";
+            } else if (method === "banktransfer") {
+                label.innerHTML = '<i class="fas fa-bank"></i> Account Info:';
+                input.placeholder = "Enter Bank Account Number / IBAN";
+            }
+        } else {
+            detailsDiv.classList.add("hidden");
+            input.required = false;
+        }
+    }
+
+    function validatePayment() {
+        const method = document.getElementById("paymentMethod").value;
+        const details = document.getElementById("detailsInput").value.trim();
+
+        if (!method) {
+            alert("Please select a payment method.");
+            return false;
+        }
+        if (!details) {
+            alert("Please enter payment details.");
+            return false;
+        }
+
+        if (method === "nayapay" && !/^\d{10}$/.test(details)) {
+            alert("Please enter a valid 10-digit NayaPay ID.");
+            return false;
+        }
+        if (method === "debitcard" && !/^\d{16}$/.test(details)) {
+            alert("Please enter a valid 16-digit Debit Card Number.");
+            return false;
+        }
+        if (method === "banktransfer" && (details.length < 10 || details.length > 34)) {
+            alert("Please enter a valid Bank Account Number / IBAN.");
+            return false;
+        }
+        return true;
+    }
+</script>
+</body>
+</html>

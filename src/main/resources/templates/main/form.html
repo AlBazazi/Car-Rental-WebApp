@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Car Rental Form</title>
+    <link rel="icon" href="https://www.flaticon.com/svg/static/icons/svg/1047/1047051.svg" type="image/svg+xml">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="/rentalform.css">
+</head>
+<body>
+<div class="container">
+    <h1><i class="fas fa-file-alt"></i> Car Rental Form</h1>
+    <form id="rentalForm" action="/rental/create" method="POST" onsubmit="return validateForm()">
+        <label for="name"><i class="fas fa-user"></i> Name</label>
+        <input type="text" id="name" name="name" placeholder="Enter full name" required>
+
+        <label for="email"><i class="fas fa-envelope"></i> Email</label>
+        <input type="text" id="email" name="email" placeholder="ABC@gmail.com" required>
+
+        <label for="phoneNumber"><i class="fas fa-phone"></i> Phone Number</label>
+        <input type="text" id="phoneNumber" name="phoneNumber" placeholder="e.g., 03XXXXXXXXX" required>
+
+        <label for="nic"><i class="fas fa-id-card"></i> NIC (National ID Number)</label>
+        <input type="number" id="nic" name="nic" placeholder="Enter 15-digit NIC" required>
+
+        <label for="make"><i class="fas fa-car"></i> Car Make</label>
+        <select id="make" name="make" onchange="updateCarModels()" required>
+            <option value="">Select a car make</option>
+            <option value="BMW">BMW</option>
+            <option value="Audi">Audi</option>
+            <option value="Mercedes">Mercedes</option>
+        </select>
+
+        <label for="model"><i class="fas fa-car-side"></i> Car Model</label>
+        <select id="model" name="model" onchange="fetchPrice()" required>
+            <option value="">Select a model</option>
+        </select>
+
+        <div id="priceDisplay" style="font-weight: bold; color: #28a745; margin: 10px 0;"></div>
+
+        <div class="form-row">
+            <div>
+                <label for="numberOfDays"><i class="fas fa-calendar-day"></i> Number of Days</label>
+                <input type="number" id="numberOfDays" name="numberOfDays" required min="1" max="30">
+            </div>
+            <div>
+                <label for="startDate"><i class="fas fa-calendar-alt"></i> Start Date</label>
+                <input type="date" id="startDate" name="startDate" required>
+            </div>
+        </div>
+
+        <input type="hidden" id="calculatedCost" name="cost" value="0.00">
+        <input type="hidden" id="orderId" name="id" value="AUTO_GENERATED_ID">
+        <input type="hidden" id="selectedCar" name="car" value="">
+
+        <div class="button-container">
+            <button type="button" class="back-home-btn" onclick="window.location.href='/'">
+                <i class="fas fa-home"></i> Go Back to Home
+            </button>
+            <button type="button" class="clear-form-btn" onclick="clearForm()">
+                <i class="fas fa-eraser"></i> Clear Form
+            </button>
+            <button type="submit" class="submit-btn">
+                <i class="fas fa-paper-plane"></i> Proceed to Payment
+            </button>
+        </div>
+    </form>
+</div>
+<script>
+    function updateCarModels() {
+        const make = document.getElementById("make").value;
+        const modelSelect = document.getElementById("model");
+        modelSelect.innerHTML = "<option value=''>Select a model</option>";
+        document.getElementById("priceDisplay").innerText = "";
+        document.getElementById("calculatedCost").value = "0.00";
+        if (make) {
+            fetch(`/rental/models?make=${encodeURIComponent(make)}`)
+                .then(response => response.json())
+                .then(models => {
+                    models.forEach(model => {
+                        const option = document.createElement("option");
+                        option.value = model;
+                        option.text = model;
+                        modelSelect.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error("Error fetching car models:", error);
+                });
+        }
+    }
+    function fetchPrice() {
+        const make = document.getElementById("make").value;
+        const model = document.getElementById("model").value;
+        if (make && model) {
+            fetch(`/rental/price?make=${encodeURIComponent(make)}&model=${encodeURIComponent(model)}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Network response was not ok");
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const price = data.price || 0;
+                    document.getElementById("calculatedCost").value = price;
+                    document.getElementById("priceDisplay").innerText = `Price per day: ${price} PKR`;
+                })
+                .catch(error => {
+                    console.error("Error fetching price:", error);
+                    alert("Could not fetch price. Please try again.");
+                });
+        } else {
+            document.getElementById("priceDisplay").innerText = "";
+            document.getElementById("calculatedCost").value = "0.00";
+        }
+    }
+    function validateForm() {
+        const phoneNumber = document.getElementById("phoneNumber").value;
+        const nic = document.getElementById("nic").value;
+        const startDate = document.getElementById("startDate").value;
+        const numberOfDays = document.getElementById("numberOfDays").value;
+        const email = document.getElementById("email").value;
+        const phoneRegex = /^0\d{10}$/;
+        if (!phoneRegex.test(phoneNumber)) {
+            alert("Phone number must start with 0 and have exactly 10 digits.");
+            return false;
+        }
+        if (nic.length !== 13) {
+            alert("NIC number must be exactly 13 digits.");
+            return false;
+        }
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            alert("Please enter a valid email address.");
+            return false;
+        }
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const selectedDate = new Date(startDate);
+        selectedDate.setHours(0, 0, 0, 0);
+        if (selectedDate < today) {
+            alert("Start date cannot be before today's date.");
+            return false;
+        }
+        if (parseInt(numberOfDays) < 1 || parseInt(numberOfDays) > 30) {
+            alert("You can rent the car for a maximum of 30 days and a minimum of 1 day.");
+            return false;
+        }
+
+        return true;
+    }
+    function clearForm() {
+        document.getElementById("rentalForm").reset();
+        document.getElementById("priceDisplay").innerText = "";
+        document.getElementById("calculatedCost").value = "0.00";
+    }
+</script>
+</body>
+</html>

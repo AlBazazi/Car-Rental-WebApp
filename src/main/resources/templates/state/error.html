@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Operation Failed</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffe6e6;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(255, 0, 0, 0.2);
+            text-align: center;
+        }
+        h1 {
+            color: #cc0000;
+        }
+        p {
+            font-size: 1.2rem;
+            color: #660000;
+        }
+        a {
+            display: inline-block;
+            margin: 10px 10px 0 10px;
+            padding: 10px 15px;
+            background-color: #cc0000;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        a:hover {
+            background-color: #990000;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Operation Failed</h1>
+    <p th:text="${errorMessage}">An error occurred while processing your request.</p>
+    <a href="/admin">Go Back to Admin Dashboard</a>
+</div>
+</body>
+</html>
